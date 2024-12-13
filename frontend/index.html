@@ -1,0 +1,43 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Tareas</title>
+</head>
+<body>
+    <h1>Mis Tareas</h1>
+    <ul id="taskList"></ul>
+
+    <script>
+        // URL base de la API (reemplázala con la URL que te dio AWS)
+        const apiUrl = 'https://ndl021o79f.execute-api.us-east-1.amazonaws.com';
+
+        // Función para obtener tareas
+        function fetchTasks() {
+            fetch(`${apiUrl}/tasks`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Mostrar las tareas en una lista
+                const taskList = document.getElementById('taskList');
+                taskList.innerHTML = '';  // Limpiar la lista antes de agregar
+                data.forEach(task => {
+                    const li = document.createElement('li');
+                    li.textContent = `${task.title}: ${task.description}`;
+                    taskList.appendChild(li);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching tasks:', error);
+            });
+        }
+
+        // Llamar a la función para obtener las tareas al cargar la página
+        window.onload = fetchTasks;
+    </script>
+</body>
+</html>
