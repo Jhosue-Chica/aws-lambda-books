@@ -1,30 +1,23 @@
-const AWS = require("aws-sdk");
+import AWS from "aws-sdk";
 
-exports.getBook = async (event) => {
-  const dynamodb = new AWS.DynamoDB.DocumentClient();
-  
-  // Obtener el BookID de los parámetros de la ruta
+const dynamodb = new AWS.DynamoDB.DocumentClient();
+
+export const getBook = async (event) => {
   const { BookID } = event.pathParameters;
 
+  const params = {
+    TableName: "Books",
+    Key: { BookID }
+  };
+
   try {
-    const params = {
-      TableName: "Books",
-      Key: {
-        BookID: BookID
-      }
-    };
-
-    // Usar get() en lugar de scan() para buscar por ID específico
     const result = await dynamodb.get(params).promise();
-
-    // Verificar si se encontró el libro
     if (!result.Item) {
       return {
         statusCode: 404,
-        body: JSON.stringify({ message: "Libro no encontrado" })
+        body: JSON.stringify({ error: "Libro no encontrado" })
       };
     }
-
     return {
       statusCode: 200,
       body: JSON.stringify(result.Item)
@@ -32,10 +25,7 @@ exports.getBook = async (event) => {
   } catch (error) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ 
-        message: "Error al obtener el libro", 
-        error: error.message 
-      })
+      body: JSON.stringify({ error: "No se pudo recuperar el libro" })
     };
   }
 };

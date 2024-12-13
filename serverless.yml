@@ -13,6 +13,23 @@ provider:
       Resource: 
         - arn:aws:dynamodb:us-east-1:509399629371:table/Books
 
+resources:
+  Resources:
+    Books:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Books
+        AttributeDefinitions:
+          - AttributeName: BookID
+            AttributeType: S
+        KeySchema:
+          - AttributeName: BookID
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+
+          
 functions:
   hello:
     handler: src/handler.hello
@@ -42,7 +59,6 @@ functions:
             path: /books/{BookID} 
             method: get
 
-
   updateBook:
     handler: src/updateBook.updateBook  
     events:
@@ -60,18 +76,3 @@ functions:
 plugins:
   - serverless-offline
 
-resources:
-  Resources:
-    Books:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: Books
-        AttributeDefinitions:
-          - AttributeName: BookID
-            AttributeType: S
-        KeySchema:
-          - AttributeName: BookID
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 5
-          WriteCapacityUnits: 5

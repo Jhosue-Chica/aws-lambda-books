@@ -12,7 +12,7 @@ exports.deleteBook = async (event) => {
   return {
     statusCode: 200,
     body: JSON.stringify({
-      message: `Book with ID ${BookID} deleted successfully`, 
+      message: `Libro con ID ${BookID} eliminado exitosamente`, 
     }),
   };
 };

@@ -24,6 +24,9 @@ exports.addBook = async (event) => {
 
   return {
     statusCode: 200,
-    body: JSON.stringify(newBook),
+    body: JSON.stringify({
+      message: "El libro ha sido creado exitosamente",
+      book: newBook
+    }),
   };
 };
